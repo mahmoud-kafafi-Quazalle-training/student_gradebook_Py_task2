@@ -13,6 +13,7 @@ def main():
         print("5. Record Grade")
         print("6. Student Report")
         print("7. Class Summary")
+        print("8. Search Students by Name")
         print("4. Exit")
 
         choice = input("Please select an option: ").strip()
@@ -29,6 +30,8 @@ def main():
             show_student_report(students)
         elif choice == '7':
             print_class_summary(students)
+        elif choice == '8':
+            search_students(students)
         elif choice == '4':
             print("Exiting the Gradebook. Goodbye!")
             break
@@ -112,6 +115,20 @@ def show_student_report(students):
         return
 
     print_student_report(student)
+
+
+def search_students(students):
+    query = input("Search by name: ").strip().casefold()
+    if not query:
+        print("Enter part of a student's name.")
+        return
+
+    matches = {
+        student_id: student
+        for student_id, student in students.items()
+        if query in student.name.casefold()
+    }
+    view_students(matches)
 
 
 if __name__ == "__main__":
