@@ -1,4 +1,4 @@
-from students import Student
+from students import Student, StudentNotFoundError, get_student
 
 
 def main():
@@ -9,6 +9,7 @@ def main():
         print("1. Add Student")
         print("2. View Students")
         print("3. Remove Student")
+        print("5. Record Grade")
         print("4. Exit")
 
         choice = input("Please select an option: ").strip()
@@ -19,6 +20,8 @@ def main():
             view_students(students)
         elif choice == '3':
             remove_student(students)
+        elif choice == '5':
+            record_grade(students)
         elif choice == '4':
             print("Exiting the Gradebook. Goodbye!")
             break
@@ -64,6 +67,33 @@ def remove_student(students):
 
     del students[student_id]
     print("Student removed.")
+
+
+def record_grade(students):
+    student_id = input("Student ID: ").strip()
+    try:
+        student = get_student(students, student_id)
+    except StudentNotFoundError as error:
+        print(error)
+        return
+
+    subject = input("Subject: ").strip()
+    if not subject:
+        print("Subject is required.")
+        return
+
+    try:
+        score = float(input("Score (0 to 100): "))
+    except ValueError:
+        print("Enter a numeric score from 0 to 100.")
+        return
+
+    if not 0 <= score <= 100:
+        print("Score must be between 0 and 100.")
+        return
+
+    student.add_grade(subject, score)
+    print("Grade recorded.")
 
 
 if __name__ == "__main__":
