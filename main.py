@@ -1,10 +1,27 @@
 from reports import print_class_summary, print_student_report
+from storage import load_students, save_students
 from students import Student, StudentNotFoundError, get_student
 
 
 def main():
-    students = {}
+    try:
+        students = load_students()
+    except (OSError, ValueError) as error:
+        print(f"Could not load gradebook data: {error}")
+        return
 
+    try:
+        run_menu(students)
+    except (EOFError, KeyboardInterrupt):
+        print("\nExiting the Gradebook. Goodbye!")
+
+    try:
+        save_students(students)
+    except (OSError, ValueError) as error:
+        print(f"Could not save gradebook data: {error}")
+
+
+def run_menu(students):
     while True:
         print("Welcome to the Student Gradebook!")
         print("1. Add Student")
