@@ -19,7 +19,8 @@ def print_student_report(student):
         print("No grades recorded.")
         return
 
-    subject_width = max(len("Subject"), *(len(subject) for subject, _ in student.grades))
+    subject_width = max(len(subject) for subject, _ in student.grades)
+    subject_width = max(subject_width, len("Subject"))
     print(f"{'Subject':<{subject_width}}  {'Score':>5}")
     for subject, score in student.grades:
         print(f"{subject:<{subject_width}}  {score:>5.1f}")
@@ -30,12 +31,17 @@ def print_student_report(student):
 
 
 def print_class_summary(students):
-    graded_students = [student for student in students.values() if student.grades]
+    graded_students = [
+        student for student in students.values() if student.grades
+    ]
     if not graded_students:
         print("No grades recorded for the class.")
         return
 
-    averages = {student.student_id: student.get_average() for student in graded_students}
+    averages = {
+        student.student_id: student.get_average()
+        for student in graded_students
+    }
     class_average = sum(averages.values()) / len(averages)
     top_score = max(averages.values())
     top_students = [
@@ -43,7 +49,9 @@ def print_class_summary(students):
         for student in graded_students
         if averages[student.student_id] == top_score
     ]
-    distribution = Counter(letter_grade(average) for average in averages.values())
+    distribution = Counter(
+        letter_grade(average) for average in averages.values()
+    )
 
     print(f"\nClass average: {class_average:.1f}")
     print(f"Top student(s): {', '.join(top_students)} ({top_score:.1f})")
@@ -54,8 +62,12 @@ def print_class_summary(students):
     scores_by_subject = {}
     for student in graded_students:
         for subject, score in student.grades:
-            scores_by_subject.setdefault(subject.casefold(), (subject, []))[1].append(score)
+            _, scores = scores_by_subject.setdefault(
+                subject.casefold(), (subject, [])
+            )
+            scores.append(score)
 
     print("Subject averages:")
-    for subject, scores in sorted(scores_by_subject.values(), key=lambda item: item[0].casefold()):
+    for subject_key in sorted(scores_by_subject):
+        subject, scores = scores_by_subject[subject_key]
         print(f"  {subject}: {sum(scores) / len(scores):.1f}")

@@ -15,12 +15,12 @@ def load_students(path=DATA_FILE):
         return {}
 
     if not isinstance(records, list):
-        raise ValueError("Expected a list of student records.")
+        raise TypeError("Expected a list of student records.")
 
     students = {}
     for record in records:
         if not isinstance(record, dict):
-            raise ValueError("Invalid student record.")
+            raise TypeError("Invalid student record.")
 
         student_id = record.get("id")
         name = record.get("name")
@@ -55,7 +55,11 @@ def load_students(path=DATA_FILE):
 
 def save_students(students, path=DATA_FILE):
     records = [
-        {"id": student.student_id, "name": student.name, "grades": student.grades}
+        {
+            "id": student.student_id,
+            "name": student.name,
+            "grades": student.grades,
+        }
         for student in students.values()
     ]
 
@@ -70,7 +74,10 @@ def save_students(students, path=DATA_FILE):
     ) as data_file:
         temporary_path = Path(data_file.name)
         try:
-            json.dump(records, data_file, ensure_ascii=False, indent=2, allow_nan=False)
+            json.dump(
+                records, data_file, ensure_ascii=False,
+                indent=2, allow_nan=False,
+            )
             data_file.write("\n")
             data_file.close()
             temporary_path.replace(path)

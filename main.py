@@ -6,7 +6,7 @@ from students import Student, StudentNotFoundError, get_student
 def main():
     try:
         students = load_students()
-    except (OSError, ValueError) as error:
+    except (OSError, TypeError, ValueError) as error:
         print(f"Could not load gradebook data: {error}")
         return
 

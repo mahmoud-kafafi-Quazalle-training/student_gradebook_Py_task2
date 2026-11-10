@@ -6,7 +6,9 @@ def get_student(students, student_id):
     try:
         return students[student_id]
     except KeyError:
-        raise StudentNotFoundError(f"No student found with ID {student_id}.") from None
+        raise StudentNotFoundError(
+            f"No student found with ID {student_id}."
+        ) from None
 
 
 class Student:
