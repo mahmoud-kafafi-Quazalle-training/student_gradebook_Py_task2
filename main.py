@@ -1,4 +1,4 @@
-from reports import print_student_report
+from reports import print_class_summary, print_student_report
 from students import Student, StudentNotFoundError, get_student
 
 
@@ -12,6 +12,7 @@ def main():
         print("3. Remove Student")
         print("5. Record Grade")
         print("6. Student Report")
+        print("7. Class Summary")
         print("4. Exit")
 
         choice = input("Please select an option: ").strip()
@@ -26,6 +27,8 @@ def main():
             record_grade(students)
         elif choice == '6':
             show_student_report(students)
+        elif choice == '7':
+            print_class_summary(students)
         elif choice == '4':
             print("Exiting the Gradebook. Goodbye!")
             break
