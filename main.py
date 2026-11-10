@@ -8,7 +8,8 @@ def main():
         print("Welcome to the Student Gradebook!")
         print("1. Add Student")
         print("2. View Students")
-        print("3. Exit")
+        print("3. Remove Student")
+        print("4. Exit")
 
         choice = input("Please select an option: ").strip()
 
@@ -17,6 +18,8 @@ def main():
         elif choice == '2':
             view_students(students)
         elif choice == '3':
+            remove_student(students)
+        elif choice == '4':
             print("Exiting the Gradebook. Goodbye!")
             break
         else:
@@ -46,6 +49,21 @@ def view_students(students):
 
     for student in students.values():
         print(student)
+
+
+def remove_student(students):
+    student_id = input("Student ID to remove: ").strip()
+
+    if not student_id:
+        print("Student ID is required.")
+        return
+
+    if student_id not in students:
+        print("No student found with that ID.")
+        return
+
+    del students[student_id]
+    print("Student removed.")
 
 
 if __name__ == "__main__":
